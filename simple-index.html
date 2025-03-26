@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovateTech Solutions | Simple Version</title>
+    <style>
+        :root {
+            --color-primary: #1E3A8A;
+            --color-secondary: #0D9488;
+            --color-accent: #F97316;
+            --color-white: #FFFFFF;
+            --color-gray-50: #F8FAFC;
+            --color-gray-800: #1E293B;
+            --spacing-4: 1rem;
+            --spacing-8: 2rem;
+            --spacing-16: 4rem;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.5;
+            color: var(--color-gray-800);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-4);
+        }
+        
+        /* Header */
+        .site-header {
+            background-color: var(--color-primary);
+            padding: var(--spacing-4) 0;
+            color: var(--color-white);
+        }
+        
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-link {
+            color: var(--color-white);
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-4);
+        }
+        
+        .nav-item {
+            color: var(--color-white);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-item:hover {
+            opacity: 0.8;
+        }
+        
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: var(--color-white);
+            border: none;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-white);
+            border: 2px solid var(--color-white);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: var(--color-white);
+            padding: var(--spacing-16) 0;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto var(--spacing-8);
+        }
+        
+        .hero-cta {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-4);
+        }
+        
+        /* Sections */
+        section {
+            padding: var(--spacing-16) 0;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: var(--spacing-8);
+        }
+        
+        /* Footer */
+        .site-footer {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: var(--spacing-8) 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <nav class="main-nav">
+                <a href="#" class="logo-link">InnovateTech</a>
+                
+                <ul class="nav-links">
+                    <li><a href="#services" class="nav-item">Services</a></li>
+                    <li><a href="#about" class="nav-item">About</a></li>
+                    <li><a href="#testimonials" class="nav-item">Testimonials</a></li>
+                    <li><a href="#contact" class="nav-item">Contact</a></li>
+                </ul>
+                
+                <a href="#contact" class="btn btn-outline">Contact Us</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">Innovative Tech Solutions for Tomorrow's Challenges</h1>
+                <p class="hero-subtitle">Transforming businesses through cutting-edge technology and creative digital solutions that drive growth and innovation.</p>
+                <div class="hero-cta">
+                    <a href="#contact" class="btn btn-primary">Get Started</a>
+                    <a href="#services" class="btn btn-outline">Learn More</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="services">
+            <div class="container">
+                <h2 class="section-title">Our Services</h2>
+                <p style="text-align: center; margin-bottom: var(--spacing-8);">
+                    We provide cutting-edge technology solutions tailored to your business needs.
+                </p>
+                <!-- Services would go here in the complete version -->
+            </div>
+        </section>
+        
+        <section id="about" style="background-color: var(--color-gray-50);">
+            <div class="container">
+                <h2 class="section-title">About Us</h2>
+                <p style="text-align: center;">
+                    InnovateTech has been at the forefront of technology innovation since 2018,
+                    helping businesses transform their digital presence and capabilities.
+                </p>
+            </div>
+        </section>
+        
+        <section id="testimonials">
+            <div class="container">
+                <h2 class="section-title">What Our Clients Say</h2>
+                <!-- Testimonials would go here in the complete version -->
+            </div>
+        </section>
+        
+        <section id="contact" style="background-color: var(--color-accent); color: var(--color-white);">
+            <div class="container">
+                <h2 class="section-title">Ready to Get Started?</h2>
+                <p style="text-align: center; margin-bottom: var(--spacing-8);">
+                    Contact us today to discuss how we can help your business grow.
+                </p>
+                <div style="text-align: center;">
+                    <a href="#" class="btn btn-outline">Contact Us</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2023 InnovateTech Solutions. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 
