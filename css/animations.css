@@ -514,4 +514,15 @@
   .cursor-circle {
     display: none;
   }
+}
+
+/* Add to animations.css */
+.particles-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -10;
+  pointer-events: none;
 } 

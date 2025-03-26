@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovateTech Solutions | Innovative Tech for Tomorrow's Challenges</title>
+    <meta name="description" content="Cutting-edge technology solutions for businesses ready to transform their digital presence.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/lib/swiper-bundle.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="https://via.placeholder.com/32x32/F97316/FFFFFF/?text=IT" type="image/png">
+    
+    <!-- PRELOADER: Replace all image URLs with placeholders to avoid 404s -->
+    <script>
+        // Fix image errors before DOM loads to prevent 404s entirely
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create placeholder images for all common paths
+            const placeholders = {
+                'testimonial-1.jpg': 'https://ui-avatars.com/api/?name=User+1&background=0D9488&color=fff&size=200',
+                'testimonial-2.jpg': 'https://ui-avatars.com/api/?name=User+2&background=0D9488&color=fff&size=200',
+                'testimonial-3.jpg': 'https://ui-avatars.com/api/?name=User+3&background=0D9488&color=fff&size=200',
+                'client-1.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+1',
+                'client-2.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+2',
+                'client-3.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+3',
+                'client-4.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+4',
+                'client-5.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+5',
+                'service-1.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+1',
+                'service-2.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+2',
+                'service-3.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+3',
+                'service-4.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+4',
+                'hero-bg.jpg': 'https://via.placeholder.com/1920x1080/1E3A8A/FFFFFF/?text=Hero+Background',
+                'about-img.jpg': 'https://via.placeholder.com/800x600/0D9488/FFFFFF/?text=About+Image',
+                'favicon.png': 'https://via.placeholder.com/32x32/F97316/FFFFFF/?text=IT'
+            };
+            
+            // Replace all image sources immediately
+            const allImages = document.querySelectorAll('img');
+            allImages.forEach(img => {
+                const src = img.getAttribute('src');
+                if (!src) return;
+                
+                // Check if this is a known image that needs replacement
+                for (const [imageName, placeholder] of Object.entries(placeholders)) {
+                    if (src.includes(imageName)) {
+                        console.log('Pre-replacing:', imageName);
+                        img.setAttribute('src', placeholder);
+                        break;
+                    }
+                }
+                
+                // Add general error handler for any other images
+                img.onerror = function() {
+                    // If image still fails, use a generic placeholder
+                    if (!this.src.includes('placeholder') && !this.src.includes('ui-avatars')) {
+                        console.log('Error loading image:', this.src);
+                        this.src = 'https://via.placeholder.com/400x300/F97316/FFFFFF/?text=Image';
+                    }
+                    this.onerror = null; // Prevent infinite loops
+                };
+            });
+            
+            // Also replace background images
+            const elementsWithBg = document.querySelectorAll('[style*="background-image"]');
+            elementsWithBg.forEach(el => {
+                const style = el.getAttribute('style');
+                if (!style) return;
+                
+                // Check for background image URLs that might 404
+                for (const [imageName, placeholder] of Object.entries(placeholders)) {
+                    if (style.includes(imageName)) {
+                        const newStyle = style.replace(new RegExp(`url\\(['"]?[^)]*${imageName}['"]?\\)`, 'g'), 
+                                                     `url('${placeholder}')`);
+                        el.setAttribute('style', newStyle);
+                        break;
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Particles background -->
+    <div id="particles-js" class="particles-container"></div>
+    
+    <!-- Cursor Animation Elements -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle"></div>
+    
+    <!-- Page Loader -->
+    <div class="page-loader">
+        <div class="loader-content">
+            <svg class="loader-logo" width="120" height="120" viewBox="0 0 120 120">
+                <polygon class="logo-triangle" points="60,20 100,90 20,90"></polygon>
+                <circle class="logo-circle" cx="60" cy="60" r="40"></circle>
+            </svg>
+            <div class="loader-progress">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The rest of your HTML body content here - no changes needed -->
+    <!-- ... -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    
+    <!-- Initialize Particles.js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 80 },
+                        color: { value: '#ffffff' },
+                        shape: { type: 'circle' },
+                        opacity: { value: 0.3, random: true },
+                        size: { value: 3, random: true },
+                        line_linked: {
+                            enable: true,
+                            distance: 150,
+                            color: '#ffffff',
+                            opacity: 0.1,
+                            width: 1
+                        },
+                        move: { enable: true, speed: 1 }
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- Initialize Swiper -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Swiper !== 'undefined') {
+                new Swiper('.testimonial-slider', {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                    loop: true,
+                    pagination: { el: '.swiper-pagination', clickable: true },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    autoplay: { delay: 5000 }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -19,8 +19,79 @@
     
     <!-- Favicon -->
     <link rel="icon" href="assets/images/favicon.png" type="image/png">
+
+    <!-- PRELOADER: Replace all image URLs with placeholders to avoid 404s -->
+    <script>
+        // Fix image errors before DOM loads to prevent 404s entirely
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create placeholder images for all common paths
+            const placeholders = {
+                'testimonial-1.jpg': 'https://ui-avatars.com/api/?name=User+1&background=0D9488&color=fff&size=200',
+                'testimonial-2.jpg': 'https://ui-avatars.com/api/?name=User+2&background=0D9488&color=fff&size=200',
+                'testimonial-3.jpg': 'https://ui-avatars.com/api/?name=User+3&background=0D9488&color=fff&size=200',
+                'client-1.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+1',
+                'client-2.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+2',
+                'client-3.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+3',
+                'client-4.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+4',
+                'client-5.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+5',
+                'service-1.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+1',
+                'service-2.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+2',
+                'service-3.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+3',
+                'service-4.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+4',
+                'hero-bg.jpg': 'https://via.placeholder.com/1920x1080/1E3A8A/FFFFFF/?text=Hero+Background',
+                'about-img.jpg': 'https://via.placeholder.com/800x600/0D9488/FFFFFF/?text=About+Image',
+                'favicon.png': 'https://via.placeholder.com/32x32/F97316/FFFFFF/?text=IT'
+            };
+            
+            // Replace all image sources immediately
+            const allImages = document.querySelectorAll('img');
+            allImages.forEach(img => {
+                const src = img.getAttribute('src');
+                if (!src) return;
+                
+                // Check if this is a known image that needs replacement
+                for (const [imageName, placeholder] of Object.entries(placeholders)) {
+                    if (src.includes(imageName)) {
+                        console.log('Pre-replacing:', imageName);
+                        img.setAttribute('src', placeholder);
+                        break;
+                    }
+                }
+                
+                // Add general error handler for any other images
+                img.onerror = function() {
+                    // If image still fails, use a generic placeholder
+                    if (!this.src.includes('placeholder') && !this.src.includes('ui-avatars')) {
+                        console.log('Error loading image:', this.src);
+                        this.src = 'https://via.placeholder.com/400x300/F97316/FFFFFF/?text=Image';
+                    }
+                    this.onerror = null; // Prevent infinite loops
+                };
+            });
+            
+            // Also replace background images
+            const elementsWithBg = document.querySelectorAll('[style*="background-image"]');
+            elementsWithBg.forEach(el => {
+                const style = el.getAttribute('style');
+                if (!style) return;
+                
+                // Check for background image URLs that might 404
+                for (const [imageName, placeholder] of Object.entries(placeholders)) {
+                    if (style.includes(imageName)) {
+                        const newStyle = style.replace(new RegExp(`url\\(['"]?[^)]*${imageName}['"]?\\)`, 'g'), 
+                                                     `url('${placeholder}')`);
+                        el.setAttribute('style', newStyle);
+                        break;
+                    }
+                }
+            });
+        });
+    </script>
 </head>
 <body>
+    <!-- Particles background -->
+    <div id="particles-js" class="particles-container"></div>
+    
     <!-- Cursor Animation Elements -->
     <div class="cursor-dot"></div>
     <div class="cursor-circle"></div>
@@ -618,43 +689,235 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="js/lib/gsap.min.js"></script>
+    <script src="js/lib/ScrollTrigger.min.js"></script>
+    <script src="js/lib/particles.min.js"></script>
+    <script src="js/lib/swiper-bundle.min.js"></script>
+    <script src="js/lib/vanilla-tilt.min.js"></script>
     <script>
-      // Array of libraries to load
-      const libraries = [
-        {name: 'GSAP', url: 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js'},
-        {name: 'ScrollTrigger', url: 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js', depends: 'GSAP'},
-        {name: 'Particles.js', url: 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js'},
-        {name: 'Swiper', url: 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js'},
-        {name: 'VanillaTilt', url: 'https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js'}
-      ];
+      // Track which libraries have been loaded
+      window.loadedLibraries = {
+        gsap: false,
+        scrollTrigger: false,
+        particles: false,
+        swiper: false,
+        vanillaTilt: false
+      };
       
-      // Function to load script dynamically
-      function loadScript(library) {
-        return new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          script.src = library.url;
-          script.onload = () => resolve(library.name);
-          script.onerror = () => reject(new Error(`Failed to load ${library.name}`));
-          document.body.appendChild(script);
-        });
-      }
-      
-      // Load all libraries and then initialize
-      Promise.all(libraries.map(lib => loadScript(lib)))
-        .then(() => {
-          // Load our app scripts
-          const mainScript = document.createElement('script');
-          mainScript.src = 'js/main.js';
-          document.body.appendChild(mainScript);
+      // Handle missing resources with automatic CDN fallbacks
+      window.addEventListener('error', function(e) {
+        if (e.target.tagName === 'SCRIPT') {
+          console.warn('Resource failed to load:', e.target.src);
           
-          const animationsScript = document.createElement('script');
-          animationsScript.src = 'js/animations.js';
-          document.body.appendChild(animationsScript);
-        })
-        .catch(error => {
-          console.error('Error loading libraries:', error);
-          alert('Some resources failed to load. The page may not display correctly.');
+          // Handle GSAP
+          if (e.target.src.includes('gsap.min.js') && !window.loadedLibraries.gsap) {
+            window.loadedLibraries.gsap = true;
+            var script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
+            document.body.appendChild(script);
+          }
+          
+          // Handle ScrollTrigger
+          if (e.target.src.includes('ScrollTrigger.min.js') && !window.loadedLibraries.scrollTrigger) {
+            window.loadedLibraries.scrollTrigger = true;
+            var script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js';
+            document.body.appendChild(script);
+          }
+          
+          // Handle Particles.js
+          if (e.target.src.includes('particles.min.js') && !window.loadedLibraries.particles) {
+            window.loadedLibraries.particles = true;
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js';
+            document.body.appendChild(script);
+          }
+          
+          // Handle Swiper
+          if (e.target.src.includes('swiper-bundle.min.js') && !window.loadedLibraries.swiper) {
+            window.loadedLibraries.swiper = true;
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js';
+            document.body.appendChild(script);
+          }
+          
+          // Handle Vanilla-tilt
+          if (e.target.src.includes('vanilla-tilt.min.js') && !window.loadedLibraries.vanillaTilt) {
+            window.loadedLibraries.vanillaTilt = true;
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js';
+            document.body.appendChild(script);
+          }
+        }
+      }, true);
+    </script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script>
+      // Debug script to check which libraries are loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM Content Loaded');
+        
+        // Check all libraries
+        console.log('GSAP loaded:', typeof gsap !== 'undefined');
+        console.log('ScrollTrigger loaded:', typeof ScrollTrigger !== 'undefined');
+        console.log('particlesJS loaded:', typeof particlesJS !== 'undefined');
+        console.log('Swiper loaded:', typeof Swiper !== 'undefined');
+        console.log('VanillaTilt loaded:', typeof VanillaTilt !== 'undefined');
+        
+        // Check if our scripts are running
+        console.log('main.js and animations.js should have run by now');
+      });
+    </script>
+    <script>
+      // Comprehensive image error handler
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add error handler to all images
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+          // Get path parts to create relevant placeholder text
+          const pathParts = img.src.split('/');
+          const fileName = pathParts[pathParts.length - 1];
+          const folderName = pathParts[pathParts.length - 2] || '';
+          
+          // Add error handler if not already there
+          if (!img.hasAttribute('data-error-handled')) {
+            img.setAttribute('data-error-handled', 'true');
+            img.onerror = function() {
+              console.log('Replacing missing image:', fileName);
+              
+              // Different placeholder based on image type
+              if (folderName === 'testimonials') {
+                this.src = `https://ui-avatars.com/api/?name=User&background=0D9488&color=fff&size=200`;
+              } else if (folderName === 'clients' || fileName.includes('client')) {
+                const clientNum = fileName.match(/\d+/) ? fileName.match(/\d+/)[0] : '1';
+                this.src = `https://via.placeholder.com/150x50/1E3A8A/ffffff?text=Client+${clientNum}`;
+              } else if (folderName === 'services' || fileName.includes('service')) {
+                const serviceNum = fileName.match(/\d+/) ? fileName.match(/\d+/)[0] : '1';
+                this.src = `https://via.placeholder.com/80x80/0D9488/ffffff?text=Service+${serviceNum}`;
+              } else if (fileName.includes('hero')) {
+                this.src = `https://via.placeholder.com/1920x1080/1E3A8A/ffffff?text=Hero+Background`;
+              } else if (fileName.includes('about')) {
+                this.src = `https://via.placeholder.com/800x600/0D9488/ffffff?text=About+Us`;
+              } else {
+                this.src = `https://via.placeholder.com/800x600/F97316/ffffff?text=${fileName}`;
+              }
+              
+              this.onerror = null; // Prevent infinite loops
+            };
+            
+            // Trigger onerror manually for images that have already failed to load
+            if (img.complete && img.naturalWidth === 0) {
+              img.onerror();
+            }
+          }
         });
+        
+        // Handle SVG icons as well
+        document.querySelectorAll('use').forEach(use => {
+          const href = use.getAttribute('xlink:href') || use.getAttribute('href');
+          if (href && href.startsWith('#') === false) {
+            console.log('External SVG reference detected:', href);
+            // We can't easily replace SVG references, but we can log them
+          }
+        });
+        
+        // Handle background images
+        document.querySelectorAll('[data-bg]').forEach(el => {
+          const bgUrl = el.getAttribute('data-bg');
+          if (bgUrl) {
+            const img = new Image();
+            img.onload = function() {
+              el.style.backgroundImage = `url(${bgUrl})`;
+            };
+            img.onerror = function() {
+              console.log('Replacing missing background image:', bgUrl);
+              const section = el.closest('section')?.id || 'section';
+              el.style.backgroundImage = `url(https://via.placeholder.com/1920x1080/1E3A8A/ffffff?text=${section}+Background)`;
+            };
+            img.src = bgUrl;
+          }
+        });
+      });
+    </script>
+    <script>
+      // Initialize particles manually if it hasn't already started
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          if (typeof particlesJS !== 'undefined' && document.getElementById('particles-js')) {
+            console.log('Initializing particles manually');
+            particlesJS('particles-js', {
+              particles: {
+                number: { value: 80 },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                  enable: true,
+                  distance: 150,
+                  color: '#ffffff',
+                  opacity: 0.1,
+                  width: 1
+                },
+                move: { enable: true, speed: 1, direction: 'none', random: true }
+              }
+            });
+          }
+        }, 1000); // Wait a second to make sure everything is loaded
+      });
+    </script>
+    <script>
+      // Fix cursor issues on mobile
+      document.addEventListener('DOMContentLoaded', function() {
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorCircle = document.querySelector('.cursor-circle');
+        
+        // Hide cursor elements on mobile devices
+        if (window.innerWidth <= 768) {
+          if (cursorDot) cursorDot.style.display = 'none';
+          if (cursorCircle) cursorCircle.style.display = 'none';
+        }
+        
+        // Basic cursor functionality in case animations.js fails
+        if (cursorDot && cursorCircle && window.innerWidth > 768) {
+          document.addEventListener('mousemove', function(e) {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            cursorCircle.style.left = e.clientX + 'px';
+            cursorCircle.style.top = e.clientY + 'px';
+          });
+        }
+      });
+    </script>
+    <script>
+      // Initialize Swiper if it hasn't already
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          if (typeof Swiper !== 'undefined') {
+            const existingSwiper = document.querySelector('.swiper-initialized');
+            if (!existingSwiper) {
+              console.log('Initializing Swiper manually');
+              new Swiper('.testimonial-slider', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                pagination: {
+                  el: '.swiper-pagination',
+                  clickable: true,
+                },
+                navigation: {
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
+                },
+                autoplay: {
+                  delay: 5000,
+                },
+              });
+            }
+          }
+        }, 1500);
+      });
     </script>
 </body>
 </html> 

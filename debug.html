@@ -1,0 +1,30 @@
+<script>
+  // Debug mode - replace all images with placeholders
+  window.addEventListener('DOMContentLoaded', function() {
+    // Replace all image sources with placeholders
+    document.querySelectorAll('img').forEach(img => {
+      const originalSrc = img.getAttribute('data-original-src') || img.src;
+      img.setAttribute('data-original-src', originalSrc);
+      
+      const pathParts = originalSrc.split('/');
+      const fileName = pathParts[pathParts.length - 1];
+      const folderName = pathParts[pathParts.length - 2] || '';
+      
+      if (folderName === 'testimonials') {
+        img.src = `https://ui-avatars.com/api/?name=User&background=0D9488&color=fff&size=200`;
+      } else if (folderName === 'clients' || fileName.includes('client')) {
+        const clientNum = fileName.match(/\d+/) ? fileName.match(/\d+/)[0] : '1';
+        img.src = `https://via.placeholder.com/150x50/1E3A8A/ffffff?text=Client+${clientNum}`;
+      } else if (folderName === 'services' || fileName.includes('service')) {
+        const serviceNum = fileName.match(/\d+/) ? fileName.match(/\d+/)[0] : '1';
+        img.src = `https://via.placeholder.com/80x80/0D9488/ffffff?text=Service+${serviceNum}`;
+      } else if (fileName.includes('hero')) {
+        img.src = `https://via.placeholder.com/1920x1080/1E3A8A/ffffff?text=Hero+Background`;
+      } else if (fileName.includes('about')) {
+        img.src = `https://via.placeholder.com/800x600/0D9488/ffffff?text=About+Us`;
+      } else {
+        img.src = `https://via.placeholder.com/800x600/F97316/ffffff?text=${fileName}`;
+      }
+    });
+  });
+</script> 

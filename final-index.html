@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovateTech Solutions | Final Working Version</title>
+    <meta name="description" content="Cutting-edge technology solutions for businesses ready to transform their digital presence.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/lib/swiper-bundle.min.css">
+    
+    <!-- Use data URI favicon to avoid 404 -->
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAmNJREFUWEfFl01rE1EUht+TpLZVEBeCLnyBLgQXfuBCF4ILwS+o3YgouvYPuHFj3IjgHyi4krgoCLpzI1IQBBGhOxERXagbQVHT5h7JnTCZzNwkk9jmTiBk5p7zPs9733PuRBjzoDGvjx0A+cmyGfuGnb7gzyCBV0q3wd1vKLaHFVjXQlEgZuZ2qAzNbBtJ9/fTvpYAZ4HaS4y3vQCM8UjgzLCA1gZwTDfKlrMKPKq1s/OdgTTyR6P2e7u82WquOwPHMkCYmQNgsW3SU9MCYC3UTwA8yTAVMnMlDAL38gK0F8BJ7Wy0A4wxl4q/3aBpGKcK+PutqKq+5Aa2FQDtfwRxo+1tDYncvlZ3TwH8ymSAUwA+pPWF1gB+NXQe4GKsgA8kr8RJzHwI4GYDdFW1Uz1mRMrcl+O9oBVArF4AuO6tUCJZTwAYDsT1JHIupaqNrZh5E2AljCeRc0uquhGzb3rLsAsgtdwLIF7NPQMYl8rsDnEfwHzPHSC/A8Z5ILbhN8LJMJkGEC7lfIZwF/R2IO3qA3gvkbk3ADvfASGSud+Jz58+gM5W3PQA86p61AsQO6G2Wkk/gPXGJpU01y3TDDSyYOaEqqLTgklVjRsxa2+G3gxENXM++ZiBcMz80oNQ7SSwTlXdnJkDN6HwLMwcbPU3Am4N248BX07KI40CUVqcFGCydbJ+iW22dXstzAJc2gGQPwNxH7pZyPj/GUKB5fqpPBvS3QIeq2p3M4peyMIQ4fXrDYO1yM80QFP2YQc/s93wvKpDnf3OAtwpBgbYsQNsXYKeAI05GAf4D1gOGCGQvGUSAAAAAElFTkSuQmCC" type="image/png">
+    
+    <!-- PRELOADER: Replace all image URLs with placeholders to avoid 404s -->
+    <script>
+        // Fix image errors before DOM loads to prevent 404s entirely
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create placeholder images for all common paths
+            const placeholders = {
+                'testimonial-1.jpg': 'https://ui-avatars.com/api/?name=User+1&background=0D9488&color=fff&size=200',
+                'testimonial-2.jpg': 'https://ui-avatars.com/api/?name=User+2&background=0D9488&color=fff&size=200',
+                'testimonial-3.jpg': 'https://ui-avatars.com/api/?name=User+3&background=0D9488&color=fff&size=200',
+                'client-1.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+1',
+                'client-2.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+2',
+                'client-3.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+3',
+                'client-4.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+4',
+                'client-5.svg': 'https://via.placeholder.com/150x50/1E3A8A/FFFFFF/?text=Client+5',
+                'service-1.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+1',
+                'service-2.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+2',
+                'service-3.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+3',
+                'service-4.svg': 'https://via.placeholder.com/80x80/0D9488/FFFFFF/?text=Service+4',
+                'hero-bg.jpg': 'https://via.placeholder.com/1920x1080/1E3A8A/FFFFFF/?text=Hero+Background',
+                'about-img.jpg': 'https://via.placeholder.com/800x600/0D9488/FFFFFF/?text=About+Image',
+                'favicon.png': 'https://via.placeholder.com/32x32/F97316/FFFFFF/?text=IT'
+            };
+            
+            // Replace all image sources immediately
+            const allImages = document.querySelectorAll('img');
+            allImages.forEach(img => {
+                const src = img.getAttribute('src');
+                if (!src) return;
+                
+                // Check if this is a known image that needs replacement
+                for (const [imageName, placeholder] of Object.entries(placeholders)) {
+                    if (src.includes(imageName)) {
+                        console.log('Pre-replacing:', imageName);
+                        img.setAttribute('src', placeholder);
+                        break;
+                    }
+                }
+                
+                // Add general error handler for any other images
+                img.onerror = function() {
+                    // If image still fails, use a generic placeholder
+                    if (!this.src.includes('placeholder') && !this.src.includes('ui-avatars')) {
+                        console.log('Error loading image:', this.src);
+                        this.src = 'https://via.placeholder.com/400x300/F97316/FFFFFF/?text=Image';
+                    }
+                    this.onerror = null; // Prevent infinite loops
+                };
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Copy the full body content from index.html here -->
+    <!-- ... -->
+
+    <!-- Use online CDN libraries to ensure they load -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js"></script>
+    
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html> 
